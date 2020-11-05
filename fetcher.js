@@ -1,11 +1,12 @@
 const request = require('request');
 const fs = require('fs');
 const http = require('http');
-request(process.argv[2], () => {
-  fs.writeFile(process.argv[3], process.argv[2], function(err) {
+
+request(process.argv[2], (res, err, body) => {
+  fs.writeFile(process.argv[3], body, function(err) {
     if (err) throw err;
-    console.log('Downloaded and saved 3261 bytes to ./index.html');
-  }); 
+    let stats = fs.statSync(process.argv[3]);
+    let fileSizeInBytes = stats["size"];
+    console.log('Downloaded and saved ' + fileSizeInBytes + ' bytes to ./index.html');
+  });
 });
-
-
